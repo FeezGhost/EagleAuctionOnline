@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,300,400,500,700,900" rel="stylesheet">
+
+    <title>Eagle Auction Genius (EAG)</title>
+    <!--
+Eagle Auction Genius (EAG)
+https://templatemo.com/tm-535-softy-pinko
+-->
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="{%static 'assets/css/bootstrap.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{%static 'assets/css/font-awesome.css'%}">
+
+    <link rel="stylesheet" href="{%static 'assets/css/templatemo-softy-pinko.css'%}">
+
+</head>
+
+<body>
+
+    <!-- ***** Preloader Start ***** -->
+    <div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
+
+
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="#" class="logo">
+                            <img src="{%static  'assets/images/logo.png'%}" alt="Eagle Auction Genius (EAG)" />
+                        </a>
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav">
+                            <li><a href="#welcome" class="active">Home</a></li>
+                            <li><a href="#features">About</a></li>
+                            <li><a href="#work-process">Details</a></li>
+                            <li><a href="#testimonials">Testimonials</a></li>
+                            <li><a href="#pricing-plans">FAQs</a></li>
+                            <li><a href="#contact-us">Contact Us</a></li>
+                            <li style="color: #ff589e; font-size: 160%; font-weight: 600;"> | </li>
+                            <li><a href="" data-toggle="modal" data-target="#modalLoginForm">SignIn</a></li>
+                            
+                            <li><a href="{% url 'signup' %}">SignUp</a></li>
+                        </ul>
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ***** Header Area End ***** -->
+
+    <!-- LogIn -->
+    <div class="modal fade " id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form method = "POST" action="">
+                {% csrf_token %}
+                <div class="modal-content myModel">
+                    <div class="modal-header text-center">
+                        <h4 class="modal-title w-100 font-weight-bold">Sign in</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body mx-3">
+                        <div class="md-form mb-5">
+                            <input type="text" id="defaultForm-user"  name="username" class="form-control"
+                                placeholder="Your Username">
+
+                        </div>
+
+                        <div class="md-form mb-4">
+                            <input type="password" id="defaultForm-pass" name="password" class="form-control validate"
+                                placeholder="Your password">
+                        </div>
+
+                    </div>
+                    <button class="btn btn-lg btn-default myModel mybtn my-4"  type="submit"><b>Login</b></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- LogUp -->
+    <div class="modal fade " id="modalLogupForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form action="">
+                <div class="modal-content myModel">
+                    <div class="modal-header text-center">
+                        <h4 class="modal-title w-100 font-weight-bold">SignUp</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body mx-3">
+                        <div class="md-form">
+                            <input type="text" id="defaultForm-email" class="form-control validate"
+                                placeholder="Your Name">
+                        </div>
+                    </div>
+
+                    <div class="modal-body mx-3">
+                        <div class="md-form ">
+                            <input type="number" id="defaultForm-email" class="form-control validate"
+                                placeholder="CONTACT  NUMBER (27)">
+                        </div>
+                    </div>
+                    <div class="modal-body mx-3">
+                        <div class="md-form ">
+                            <input type="email" id="defaultForm-email" class="form-control validate"
+                                placeholder="Your Email">
+
+                        </div>
+                    </div>
+                    <div class="modal-body mx-3">
+                        <div class="md-form ">
+                            <input type="password" id="defaultForm-pass" class="form-control validate"
+                                placeholder="Your password">
+                        </div>
+                    </div>
+
+
+                    <div class="modal-body mx-3">
+                        <div class="md-form ">
+                            <input type="password" id="defaultForm-pass" class="form-control validate"
+                                placeholder="Confirm Your password">
+                        </div>
+                    </div>
+
+                    <div class="modal-body mx-3">
+                        <div class="md-form ">
+                            <input type="text" id="defaultForm-email" class="form-control validate"
+                                placeholder="Your ACCOUNT HOLDER NAME">
+                        </div>
+                    </div>
+                    <div class="modal-body mx-3">
+                        <div class="md-form ">
+                            <label for="banks">SELECT Bank:</label>
+                            <select name="banks" id="banks">
+                                <option value="bank1">Capitec</option>
+                                <option value="bank2">Absa</option>
+                                <option value="bank3">Nedbank</option>
+                                <option value="bank4">Standard bank</option>
+                                <option value="bank1">Tyme bank</option>
+                                <option value="bank2">Bidvest</option>
+                                <option value="bank3">African bank</option>
+                                <option value="bank4">Gro bank south Africa</option>
+                                <option value="bank4">FNB South Africa</option>
+                                <option value="bank1">FNB Namibia</option>
+                                <option value="bank2">FNB South Africa</option>
+                                <option value="bank3">FNB Swaziland</option>
+                                <option value="bank4">FNB Zambia</option>
+                            </select>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="modal-body mx-3">
+                        <div class="md-form ">
+                            <input type="number" id="defaultForm-email" class="form-control validate"
+                                placeholder="Account Number">
+                        </div>
+                    </div>
+                    <div class="modal-body mx-3">
+                        <div class="md-form ">
+                            <label for="banks">SELECT Account Type:</label>
+                            <select name="account" id="account">
+                                <option value="Account1">Account1</option>
+                                <option value="Account2">Account2</option>
+                                <option value="Account3">Account3</option>
+                                <option value="Account4">Account4</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                <button class="btn btn-lg btn-default myModel mybtn my-1 mx-4"><b>REGISTER</b></button>
+        </div>
+        </form>
+    </div>
+    </div>
+
+
+
+    <!-- ***** Welcome Area Start ***** -->
+    <div class="welcome-area" id="welcome">
+
+        <!-- ***** Header Text Start ***** -->
+        <div class="header-text">
+            <div class="container">
+                <div class="row">
+                    <div class="offset-xl-3 col-xl-6 offset-lg-2 col-lg-8 col-md-12 col-sm-12">
+                        <h2 class="text-light"><strong style="color: #ff589e;">Eagle Auction Genius (EAG)</strong> <br>a
+                            rapidly emerging online virtual auction platform</h2>
+                        <br>
+                        <p>where you can bid and buy virtual coins called <strong style="color: #ff589e;">Red-dress
+                                coin</strong> , sale them and make a small fortune in either 2 days or 5 days.
+
+                            <br> <strong>Twice Everyday</strong><br> <strong>10:00Hrs and 18:30Hrs</strong></p>
+                        <a href="dist/index.html" class="main-button-slider">Lets Get Started</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ***** Header Text End ***** -->
+    </div>
+    <!-- ***** Welcome Area End ***** -->
+
+    <!-- ***** Features Small Start ***** -->
+    <section class="section home-feature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <!-- ***** Features Small Item Start ***** -->
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-12"
+                            data-scroll-reveal="enter bottom move 50px over 0.6s after 0.2s">
+                            <div class="features-small-item">
+                                <div class="icon">
+                                    <i><img src="{%static 'assets/images/featured-item-01.png'%}" alt=""></i>
+                                </div>
+                                <h5 class="features-title">Modern Strategy</h5>
+                                <p>Buy as many shares as you can afford...</p>
+                            </div>
+                        </div>
+                        <!-- ***** Features Small Item End ***** -->
+
+                        <!-- ***** Features Small Item Start ***** -->
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-12"
+                            data-scroll-reveal="enter bottom move 50px over 0.6s after 0.4s">
+                            <div class="features-small-item">
+                                <div class="icon">
+                                    <i><img src="{%static 'assets/images/featured-item-01.png'%}" alt=""></i>
+                                </div>
+                                <h5 class="features-title">Best Relationship</h5>
+                                <p>Talk to us directly</p>
+                            </div>
+                        </div>
+                        <!-- ***** Features Small Item End ***** -->
+
+                        <!-- ***** Features Small Item Start ***** -->
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-12"
+                            data-scroll-reveal="enter bottom move 50px over 0.6s after 0.6s">
+                            <div class="features-small-item">
+                                <div class="icon">
+                                    <i><img src="{%static 'assets/images/featured-item-01.png'%}" alt=""></i>
+                                </div>
+                                <h5 class="features-title">Ultimate Marketing</h5>
+                                <p>All South African banks are welcome </p>
+                            </div>
+                        </div>
+                        <!-- ***** Features Small Item End ***** -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ***** Features Small End ***** -->
+
+    <!-- ***** Features Big Item Start ***** -->
+    <section class="section padding-top-70 padding-bottom-0" id="features">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 col-md-12 col-sm-12 align-self-center"
+                    data-scroll-reveal="enter left move 30px over 0.6s after 0.4s">
+                    <img src="{%static 'assets/images/left-image.png'%}" class="rounded img-fluid d-block mx-auto" alt="App">
+                </div>
+                <div class="col-lg-1"></div>
+                <div class="col-lg-6 col-md-12 col-sm-12 align-self-center mobile-top-fix">
+                    <div class="left-heading">
+                        <h2 class="section-title">Let’s discuss our acution system</h2>
+                    </div>
+                    <div class="left-text">
+                        <p>Red-dress coin auction is a peer to peer online auction that trades shares . each share
+                            (coin) is worth R1 and can only be bought and sold on the auction which is open daily at the
+                            times below </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="hr"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ***** Features Big Item End ***** -->
+
+    <!-- ***** Features Big Item Start ***** -->
+    <section class="section padding-bottom-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-12 col-sm-12 align-self-center mobile-bottom-fix">
+                    <div class="left-heading">
+                        <h2 class="section-title">Biding time is open twice everyday</h2>
+                    </div>
+                    <div class="left-text">
+                        <p>The auction is open for 30 minutes to allow bidders and sellers to buy and sell as much as
+                            they want . the price of the shares /coins will always remain the same R1.</p>
+                    </div>
+                </div>
+                <div class="col-lg-1"></div>
+                <div class="col-lg-5 col-md-12 col-sm-12 align-self-center mobile-bottom-fix-big"
+                    data-scroll-reveal="enter right move 30px over 0.6s after 0.4s">
+                    <img src="{%static 'assets/images/right-image.png'%}" class="rounded img-fluid d-block mx-auto" alt="App">
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ***** Features Big Item End ***** -->
+
+    <!-- ***** Home Parallax Start ***** -->
+    <section class="mini" id="work-process">
+        <div class="mini-content">
+            <div class="container">
+                <div class="row">
+                    <div class="offset-lg-3 col-lg-6">
+                        <div class="info">
+                            <h2 class="display-4">Auction Details</h2>
+                            <br>
+                            <p>Maximum of 6 hours to pay or bids could be reallocated leading to bidders profile being
+                                blocked <br>
+                                Once your share mature , they are entered on the auction automatically for sale , please
+                                make sure you register and double check your contact details as buyers need to contact
+                                you before they make a payment. ..for you to confirm payment on time as well. Please
+                                note your shares will stop growing at the specified time of your choosing meaning if you
+                                choosing
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ***** Mini Box Start ***** -->
+                <div class="row">
+
+                    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+                        <a href="#" class="mini-box">
+                            <i><img src="{%static 'assets/images/work-process-item-01.png'%}" alt=""></i>
+                            <strong>Banks</strong>
+                            <span>All South African banks</span>
+                        </a>
+                    </div>
+
+                    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+                        <a href="#" class="mini-box">
+                            <i><img src="{%static 'assets/images/work-process-item-01.png'%}" alt=""></i>
+                            <strong>Timing</strong>
+                            <span>Auction times 10:00&18:30</span>
+                        </a>
+                    </div>
+
+                    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+                        <a href="#" class="mini-box">
+                            <i><img src="{%static 'assets/images/work-process-item-01.png'%}" alt=""></i>
+                            <strong>Bids</strong>
+                            <span>Minimum bid R300/ Maximum bid R15000</span>
+                        </a>
+                    </div>
+
+                    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+                        <a href="#" class="mini-box">
+                            <i><img src="{%static 'assets/images/work-process-item-01.png'%}" alt=""></i>
+                            <strong>Profit</strong>
+                            <span>60%in 3 days ,120%in 5 days based on your maturity period.</span>
+                        </a>
+                    </div>
+
+                    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+                        <a href="#" class="mini-box">
+                            <i><img src="{%static 'assets/images/work-process-item-01.png'%}" alt=""></i>
+                            <strong>Buying</strong>
+                            <span>You can buy as many shares as you can afford provided they are still on sale.</span>
+                        </a>
+                    </div>
+
+                    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+                        <a href="#" class="mini-box">
+                            <i><img src="{%static 'assets/images/work-process-item-01.png'%}" alt=""></i>
+                            <strong>Customer Support</strong>
+                            <span>There will be direct chat to support team online should you struggle with
+                                anything</span>
+                        </a>
+                    </div>
+                </div>
+                <!-- ***** Mini Box End ***** -->
+            </div>
+        </div>
+    </section>
+    <!-- ***** Home Parallax End ***** -->
+
+    <!-- ***** Testimonials Start ***** -->
+    <section class="section" id="testimonials">
+        <div class="container">
+            <!-- ***** Section Title Start ***** -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="center-heading">
+                        <h2 class="section-title">What do they say?</h2>
+                    </div>
+                </div>
+                <div class="offset-lg-3 col-lg-6">
+                    <div class="center-text">
+                        <p> We are trsuted by a lot of poeple because we are the best auction there is. Here are some of
+                            our testomonials. </p>
+                    </div>
+                </div>
+            </div>
+            <!-- ***** Section Title End ***** -->
+
+            <div class="row">
+                <!-- ***** Testimonials Item Start ***** -->
+                <div class="col-lg-4 col-md-6 col-sm-12"
+                    data-scroll-reveal="enter bottom move 50px over 0.6s after 0.6s">
+                    <div class="team-item">
+                        <div class="team-content">
+                            <i><img src="{%static 'assets/images/testimonial-icon.png'%}" alt=""></i>
+                            <p>I am using this website for quite a while now for bidding and it is the best in what it
+                                does. every thing is so clean and easy. </p>
+                            <div class="user-image">
+                                <img src="{%static 'assets/images/t (1).JPG'%}" alt="">
+                            </div>
+                            <div class="team-info">
+                                <h3 class="user-name">Josh Soft</h3>
+                                <span>Managing Director</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ***** Testimonials Item End ***** -->
+
+                <!-- ***** Testimonials Item Start ***** -->
+                <div class="col-lg-4 col-md-6 col-sm-12"
+                    data-scroll-reveal="enter bottom move 50px over 0.6s after 0.6s">
+                    <div class="team-item">
+                        <div class="team-content">
+                            <i><img src="{%static 'assets/images/testimonial-icon.png'%}" alt=""></i>
+                            <p> I never use to bid before finding out about this website. Every thing is fast esay and
+                                secure. Now i do it all the time and made quite a lot of profit. </p>
+                            <div class="user-image">
+                                <img src="{%static 'assets/images/t (2).PNG'%}" alt="">
+                            </div>
+                            <div class="team-info">
+                                <h3 class="user-name">Kelvin Wood</h3>
+                                <span>Digital Marketer</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ***** Testimonials Item End ***** -->
+
+                <!-- ***** Testimonials Item Start ***** -->
+                <div class="col-lg-4 col-md-6 col-sm-12"
+                    data-scroll-reveal="enter bottom move 50px over 0.6s after 0.6s">
+                    <div class="team-item">
+                        <div class="team-content">
+                            <i><img src="{%static 'assets/images/testimonial-icon.png'%}" alt=""></i>
+                            <p> If I was to recomend any Auction website to any one It's this One. Every thing is
+                                trusted Fast and what a delght to use This website.</p>
+                            <div class="user-image">
+                                <img src="{%static 'assets/images/t (3).PNG'%}" alt="">
+                            </div>
+                            <div class="team-info">
+                                <h3 class="user-name">David Martin</h3>
+                                <span>Website Manager</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ***** Testimonials Item End ***** -->
+            </div>
+        </div>
+    </section>
+    <!-- ***** Testimonials End ***** -->
+
+    <!-- ***** Pricing Plans Start ***** -->
+    <section class="section colored" id="pricing-plans">
+        <div class="container">
+            <!-- ***** Section Title Start ***** -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="center-heading">
+
+                        <h2 class="display-4"> FAQ</h2>
+                    </div>
+                </div>
+                <div class="offset-lg-3 col-lg-6">
+                    <div class="center-text">
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+            <!-- ***** Section Title End ***** -->
+
+            <div class="row">
+                <!-- ***** Pricing Item Start ***** -->
+                <div class="col-lg-4 col-md-6 col-sm-12"
+                    data-scroll-reveal="enter bottom move 50px over 0.6s after 0.2s">
+                    <div class="pricing-item">
+                        <div class="pricing-body">
+                            <div class="price-wrapper text-light">
+                                <i><img src="{%static 'assets/images/testimonial-icon.png'%}" alt=""></i>
+                                <span>What is needed to register</span>
+                            </div>
+                            <div class="container">
+                                <p class="container text-center">Registration is free and easy simply enter your
+                                    details, ensure you enter your number correctly with a country code +27 and valid
+                                    email address for account activation and confirmation</p>
+                            </div>
+                        </div>
+
+                        <div class="pricing-header">
+                            <i><img src="{%static 'assets/images/testimonial-icon.png'%}" alt=""></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- ***** Pricing Item End ***** -->
+
+                <!-- ***** Pricing Item Start ***** -->
+                <div class="col-lg-4 col-md-6 col-sm-12"
+                    data-scroll-reveal="enter bottom move 50px over 0.6s after 0.4s">
+                    <div class="pricing-item active">
+                        <div class="pricing-body">
+                            <div class="price-wrapper text-light">
+                                <span>How many bids can i make</span>
+                            </div>
+                            <div class="container">
+                                <p class="container text-center">Your account allows you to enter a single bid, the more
+                                    you make payments and get approved the more bids you will be eligible for. <br> <br>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="pricing-header">
+                            <i><img src="{%static 'assets/images/testimonial-icon.png'%}" alt=""></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- ***** Pricing Item End ***** -->
+
+                <!-- ***** Pricing Item Start ***** -->
+                <div class="col-lg-4 col-md-6 col-sm-12"
+                    data-scroll-reveal="enter bottom move 50px over 0.6s after 0.6s">
+                    <div class="pricing-item">
+                        <div class="pricing-body">
+                            <div class="price-wrapper text-light">
+                                <span>percentage I get on the coins</span>
+                            </div>
+                            <div class="container">
+                                <p class="container text-center">Shares gives you the following upon selection
+                                </p>
+                                <br>
+                                <ul class="list">
+                                    <li class="active">60% in 3 days</li>
+                                    <li class="active">120 %in 5 days</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="pricing-header">
+                            <i><img src="{%static 'assets/images/testimonial-icon.png'%}" alt=""></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- ***** Pricing Item End ***** -->
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-12"
+                    data-scroll-reveal="enter bottom move 50px over 0.6s after 0.4s"></div>
+
+            </div>
+        </div>
+    </section>
+    <!-- ***** Pricing Plans End ***** -->
+
+    <!-- ***** Counter Parallax Start ***** -->
+    <section class="counter">
+        <div class="content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <div class="count-item decoration-bottom">
+                            <strong>126</strong>
+                            <span>Projects</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <div class="count-item decoration-top">
+                            <strong>63</strong>
+                            <span>Happy Clients</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <div class="count-item decoration-bottom">
+                            <strong>18</strong>
+                            <span>Awards Wins</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <div class="count-item">
+                            <strong>27</strong>
+                            <span>Countries</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ***** Counter Parallax End ***** -->
+
+
+    <!-- ***** Contact Us Start ***** -->
+    <section class="section colored" id="contact-us">
+        <div class="container">
+            <!-- ***** Section Title Start ***** -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="center-heading">
+                        <h2 class="section-title">Talk To Us</h2>
+                    </div>
+                </div>
+                <div class="offset-lg-3 col-lg-6">
+                    <div class="center-text">
+                        <p>Maecenas pellentesque ante faucibus lectus vulputate sollicitudin. Cras feugiat hendrerit
+                            semper.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- ***** Section Title End ***** -->
+
+            <div class="row">
+                <!-- ***** Contact Text Start ***** -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <h5 class="margin-bottom-30">Keep in touch</h5>
+                    <div class="contact-text">
+                        <p>110-220 Quisque diam odio, maximus ac consectetur eu, 10260
+                            <br>auctor non lorem</p>
+                        <p>You are NOT allowed to re-distribute Eagle Auction Genius (EAG) template on any template
+                            collection websites. Thank you.</p>
+                    </div>
+                </div>
+                <!-- ***** Contact Text End ***** -->
+
+                <!-- ***** Contact Form Start ***** -->
+                <div class="col-lg-8 col-md-6 col-sm-12">
+                    <div class="contact-form">
+                        <form id="contact" action="" method="get">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
+                                    <fieldset>
+                                        <input name="name" type="text" class="form-control" id="name"
+                                            placeholder="Full Name" required="">
+                                    </fieldset>
+                                </div>
+                                <div class="col-lg-6 col-md-12 col-sm-12">
+                                    <fieldset>
+                                        <input name="email" type="email" class="form-control" id="email"
+                                            placeholder="E-Mail Address" required="">
+                                    </fieldset>
+                                </div>
+                                <div class="col-lg-12">
+                                    <fieldset>
+                                        <textarea name="message" rows="6" class="form-control" id="message"
+                                            placeholder="Your Message" required=""></textarea>
+                                    </fieldset>
+                                </div>
+                                <div class="col-lg-12">
+                                    <fieldset>
+                                        <button type="submit" id="form-submit" class="main-button">Send Message</button>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- ***** Contact Form End ***** -->
+            </div>
+        </div>
+    </section>
+    <!-- ***** Contact Us End ***** -->
+
+    <!-- ***** Footer Start ***** -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <ul class="social">
+                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                        <li><a href="#"><i class="fa fa-rss"></i></a></li>
+                        <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p class="copyright">Copyright &copy; 2020 Eagle Auction Genius (EAG) Company - Designed by: Hasnat
+                        Ali</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="{%static 'assets/js/jquery-2.1.0.min.js'%}"></script>
+
+    <!-- Bootstrap -->
+    <script src="{%static 'assets/js/popper.js'%}"></script>
+    <script src="{%static 'assets/js/bootstrap.min.js'%}"></script>
+
+    <!-- Plugins -->
+    <script src="{%static 'assets/js/scrollreveal.min.js'%}"></script>
+    <script src="{%static 'assets/js/waypoints.min.js'%}"></script>
+    <script src="{%static 'assets/js/jquery.counterup.min.js'%}"></script>
+    <script src="{%static 'assets/js/imgfix.min.js'%}"></script>
+
+    <!-- Global Init -->
+    <script src="{%static 'assets/js/custom.js'%}"></script>
+
+</body>
+
+</html>
