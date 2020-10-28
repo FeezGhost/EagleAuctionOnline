@@ -124,65 +124,88 @@
                 <main>
                     <div class="container-fluid">
                         <h1 class="mt-4">Auction View</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Auction is Live</li>
-                        </ol>
-                        <h1>{{mymessage}} </h1>
-                        <h1>{{mymessage2}} </h1>
-                        <div class="row">
-                            <div class="col-lg-2"></div>
-                            <div class="col-lg-8">
-                                <div class="card text-dark mb-4 biding">
-                                    <form method = "POST" action="">
-                                        {% csrf_token %}
-                                        <div class="modal-content myModel">
-                                            <div class="modal-header text-center">
-                                                <h4 class="modal-title w-100 font-weight-bold">Bid</h4>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body mx-3 biding">
-                                                
-                                                <div class="coinpart">
-                                                    {{coinform}}
-                                                </div>
+                        {% if live %}
+                            <ol class="breadcrumb mb-4">
+                                <li class="breadcrumb-item active">Auction is Live</li>
+                            </ol>
+                        {% else %}
+                            <ol class="breadcrumb mb-4">
+                                <li class="breadcrumb-item active">Auction is Not Live</li>
+                            </ol>
+                        {% endif %}
 
-                                                <div class="md-form ">
-                                                    {{bidform}}
-                                                </div>
 
-                                            </div>
-                                            <button class="btn btn-lg btn-default myModel mybtn my-4"  type="submit"><b>Submit Bid</b></button>
-                                        </div>
-                                    </form>
+                        {% if live %}
+                            {% if msg2 %}
+                                <div class="alert alert-success alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        {{mymessage2}}
                                 </div>
-                            </div>
-                            <div class="col-lg-2"></div>
-                        </div>
-                        
-                        <h1 class="d-block">Users That Bided</h1>
-                        <div class="row">
-                            {% for bid in allbids %}
-                                
-                                <div class="col-xl-3 col-md-6">
-                                    <div class="card bg-primary text-white mb-4">
-                                        <div class="card-body">{{bid.customer.user}}</div>
-                                        <div class="card-body">{{bid.customer.user.first_name}} {{bid.customer.user.last_name}}</div> 
-                                        <div class="card-body"><h4>Coins Bided</h4> {{bid.bided}} </div>
-                                        <div class="card-body"> <h5>Account Holder Name</h5> {{bid.customer.account_holder_name}}</div>
-                                        {% comment %} edit  this {% endcomment %}
-                                        <div class="card-body"> <h5>Account Number</h5> {{bid.customer.account_number}}</div>
-                                        <div class="card-body"> <h5>Phone Number</h5> {{bid.customer.phone}}</div>
-                                        <div class="card-body"> <h5>Bank</h5> {{bid.customer.banks}}</div>
-                                        <div class="card-footer d-flex align-items-center justify-content-between">
-                                            <a class="small text-white stretched-link" href="#">View Details</a>
-                                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                        </div>
+                            {% endif %}
+                            {% if msg1 %}
+                                 <div class="alert alert-danger alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        {{mymessage}}
+                                </div>
+                            {% endif %}
+                            <div class="row">
+                                <div class="col-lg-2"></div>
+                                <div class="col-lg-8">
+                                    <div class="card text-dark mb-4 biding">
+                                        <form method = "POST" action="">
+                                            {% csrf_token %}
+                                            <div class="modal-content myModel">
+                                                <div class="modal-header text-center">
+                                                    <h4 class="modal-title w-100 font-weight-bold">Bid</h4>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body mx-3 biding">
+                                                    
+                                                    <div class="coinpart">
+                                                        {{coinform}}
+                                                    </div>
+
+                                                    <div class="md-form ">
+                                                        {{bidform}}
+                                                    </div>
+
+                                                </div>
+                                                <button class="btn btn-lg btn-default myModel mybtn my-4"  type="submit"><b>Submit Bid</b></button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
-                            {% endfor %}
-                        </div>                  
+                                <div class="col-lg-2"></div>
+                            </div>
+                            
+                            <h1 class="d-block">Users That Bided</h1>
+                            <div class="row">
+                                {% for bid in allbids %}
+                                    
+                                    <div class="col-xl-3 col-md-6">
+                                        <div class="card bg-primary text-white mb-4">
+                                            <div class="card-body">{{bid.customer.user}}</div>
+                                            <div class="card-body">{{bid.customer.user.first_name}} {{bid.customer.user.last_name}}</div> 
+                                            <div class="card-body"><h4>Coins Bided</h4> {{bid.bided}} </div>
+                                            <div class="card-body"> <h5>Account Holder Name</h5> {{bid.customer.account_holder_name}}</div>
+                                            {% comment %} edit  this {% endcomment %}
+                                            <div class="card-body"> <h5>Account Number</h5> {{bid.customer.account_number}}</div>
+                                            <div class="card-body"> <h5>Phone Number</h5> {{bid.customer.phone}}</div>
+                                            <div class="card-body"> <h5>Bank</h5> {{bid.customer.banks}}</div>
+                                            <div class="card-footer d-flex align-items-center justify-content-between">
+                                                <a class="small text-white stretched-link" href="#">View Details</a>
+                                                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div> 
+                        {% else %}
+
+                            <h1 class="text-center m-4 p-4 display-3 text-danger">Please wait for Auction to get live</h1>
+                        {% endif %}                 
                                             
                 </main>
                 <footer class="py-4 bg-light mt-auto">

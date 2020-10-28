@@ -1501,6 +1501,7 @@ footer .copyright {
   footer .footer-nav {
     margin-bottom: 30px;
   }
+  
 }
 
 /* 
@@ -1611,4 +1612,10 @@ preloader
 }
 #defaultForm-email, #defaultForm-pass{
   border: #A961D8 solid 1px !important;
+}
+.Cqueries{
+color: #FF589E;
+
+border: #FF589E solid 2px !important;
+padding-left: 10% !important;
 }

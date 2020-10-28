@@ -20,7 +20,7 @@ def dashboard(request):
         'customer': customer,
         'coins':  coins,
         'bids': bids,
-        'now': now
+        'now': now,
     }
     return render(request, 'dashboard/dist/index.html', context)
 
@@ -74,10 +74,13 @@ def auctiondetail(request):
     coinform = CoinsForm(instance=coins[0])
     hour = now.split(':')
     hours =   int(hour[0])
-    print(hour[0])
-    print(hours)
-    if(hours>10):
-        print('elligable')
+    mins = int(hour[1])
+    live = False
+    msg1 = msg2= False
+    if((hours>10 and hours<11 )):
+        live=True
+    if (hours>18 and mins>30) and (hours<20 and mins<30):
+        live=True
     if request.method == 'POST':
         value_bided = int(request.POST.get("bided"))
         bidedup= coins[0].bided
@@ -85,6 +88,7 @@ def auctiondetail(request):
         remainingup = coins[0].remaining
         if value_bided > remainingup:
             mymessage = "You don't have enough coins"
+            msg1 = True
         else:
             value_bided = str(value_bided)
             bidedup +=int(value_bided)
@@ -98,7 +102,7 @@ def auctiondetail(request):
             if bidform.is_valid():
                 userBidForm = bidform.save()
                 mymessage2 = "Sucessfully  bided"
-    print(value_bided)
+                msg2 = True
     context = {
         'customer': customer,
         'coins':  coins,
@@ -106,7 +110,10 @@ def auctiondetail(request):
         'coinform': coinform,
         'allbids': allbids,
         'mymessage': mymessage,
-        'mymessage2': mymessage2
+        'mymessage2': mymessage2,
+        'live': live,
+        'msg1': msg1,
+        'msg2': msg2,
     }
     return render(request, 'dashboard/dist/ViewAuction.html', context)
 
@@ -150,6 +157,16 @@ def logout_view(request):
     return redirect("homepage")
 
 def homepage(request):
+    
+    now = datetime.datetime.now().strftime('%H:%M:%S')
+    hour = now.split(':')
+    hours =   int(hour[0])
+    mins = int(hour[1])
+    live = False
+    if((hours>10 and hours<11)):
+        live=True
+    if (hours>18 and mins>30) and (hours<20 and mins<30):
+        live=True
     if request.user.is_authenticated:
         return redirect('dashboard')
     else:
@@ -157,12 +174,11 @@ def homepage(request):
             username = request.POST.get('username')
             password =request.POST.get('password')
             user = authenticate(request, username=username, password=password)
-            print(user)
             if user is not None:
                 login(request, user)
                 return redirect('dashboard')
             else:
                 messages.info(request, 'Username OR password is incorrect')
                 
-    context = {}
+    context = {'live':live}
     return render(request,'dashboard/index.html',  context)

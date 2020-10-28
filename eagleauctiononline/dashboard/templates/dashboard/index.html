@@ -57,7 +57,7 @@ https://templatemo.com/tm-535-softy-pinko
                             <li><a href="#testimonials">Testimonials</a></li>
                             <li><a href="#pricing-plans">FAQs</a></li>
                             <li><a href="#contact-us">Contact Us</a></li>
-                            <li style="color: #ff589e; font-size: 160%; font-weight: 600;"> | </li>
+                            <li style="color: #ff589e; font-size: 160%; font-weight: 600;"> | </li><li><a href="" data-toggle="modal" data-target="#modelChatForm">Chat</a></li>
                             <li><a href="" data-toggle="modal" data-target="#modalLoginForm">SignIn</a></li>
                             
                             <li><a href="{% url 'signup' %}">SignUp</a></li>
@@ -104,103 +104,30 @@ https://templatemo.com/tm-535-softy-pinko
             </form>
         </div>
     </div>
-    <!-- LogUp -->
-    <div class="modal fade " id="modalLogupForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    <!-- ChatBot -->
+    <div class="modal fade " id="modelChatForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <form action="">
                 <div class="modal-content myModel">
                     <div class="modal-header text-center">
-                        <h4 class="modal-title w-100 font-weight-bold">SignUp</h4>
+                        <h4 class="modal-title w-100 font-weight-bold">Chat with our Asistant Bot</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body mx-3">
-                        <div class="md-form">
-                            <input type="text" id="defaultForm-email" class="form-control validate"
-                                placeholder="Your Name">
-                        </div>
-                    </div>
-
-                    <div class="modal-body mx-3">
-                        <div class="md-form ">
-                            <input type="number" id="defaultForm-email" class="form-control validate"
-                                placeholder="CONTACT  NUMBER (27)">
-                        </div>
-                    </div>
-                    <div class="modal-body mx-3">
-                        <div class="md-form ">
-                            <input type="email" id="defaultForm-email" class="form-control validate"
-                                placeholder="Your Email">
+                        <div class="md-form mb-5">
+                            <p id="chatLog">How can we help you<br></p>
 
                         </div>
-                    </div>
-                    <div class="modal-body mx-3">
-                        <div class="md-form ">
-                            <input type="password" id="defaultForm-pass" class="form-control validate"
-                                placeholder="Your password">
-                        </div>
-                    </div>
 
 
-                    <div class="modal-body mx-3">
-                        <div class="md-form ">
-                            <input type="password" id="defaultForm-pass" class="form-control validate"
-                                placeholder="Confirm Your password">
-                        </div>
                     </div>
-
-                    <div class="modal-body mx-3">
-                        <div class="md-form ">
-                            <input type="text" id="defaultForm-email" class="form-control validate"
-                                placeholder="Your ACCOUNT HOLDER NAME">
-                        </div>
+                    <div class="m-4 ">
+                            <input id="userBox" type="text" class="Cqueries mx-2 px-4 pr-4 " onkeydown="if (event.keyCode == 13) {talk()}">
                     </div>
-                    <div class="modal-body mx-3">
-                        <div class="md-form ">
-                            <label for="banks">SELECT Bank:</label>
-                            <select name="banks" id="banks">
-                                <option value="bank1">Capitec</option>
-                                <option value="bank2">Absa</option>
-                                <option value="bank3">Nedbank</option>
-                                <option value="bank4">Standard bank</option>
-                                <option value="bank1">Tyme bank</option>
-                                <option value="bank2">Bidvest</option>
-                                <option value="bank3">African bank</option>
-                                <option value="bank4">Gro bank south Africa</option>
-                                <option value="bank4">FNB South Africa</option>
-                                <option value="bank1">FNB Namibia</option>
-                                <option value="bank2">FNB South Africa</option>
-                                <option value="bank3">FNB Swaziland</option>
-                                <option value="bank4">FNB Zambia</option>
-                            </select>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="modal-body mx-3">
-                        <div class="md-form ">
-                            <input type="number" id="defaultForm-email" class="form-control validate"
-                                placeholder="Account Number">
-                        </div>
-                    </div>
-                    <div class="modal-body mx-3">
-                        <div class="md-form ">
-                            <label for="banks">SELECT Account Type:</label>
-                            <select name="account" id="account">
-                                <option value="Account1">Account1</option>
-                                <option value="Account2">Account2</option>
-                                <option value="Account3">Account3</option>
-                                <option value="Account4">Account4</option>
-                            </select>
-                        </div>
-                    </div>
-
-
-                <button class="btn btn-lg btn-default myModel mybtn my-1 mx-4"><b>REGISTER</b></button>
+                </div>
         </div>
-        </form>
     </div>
     </div>
 
@@ -221,7 +148,11 @@ https://templatemo.com/tm-535-softy-pinko
                                 coin</strong> , sale them and make a small fortune in either 2 days or 5 days.
 
                             <br> <strong>Twice Everyday</strong><br> <strong>10:00Hrs and 18:30Hrs</strong></p>
-                        <a href="dist/index.html" class="main-button-slider">Lets Get Started</a>
+                        {% if live %}
+                            <a href="" data-toggle="modal" data-target="#modalLoginForm" class="main-button-slider">Bid is Live</a>
+                        {% else %}
+                            <a href="{% url 'signup' %}" class="main-button-slider">Lets Get Started</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -589,17 +520,6 @@ https://templatemo.com/tm-535-softy-pinko
             </div>
 
             <div class="row">
-            <div class="col-lg-4 col-md-6 col-sm-12"
-                    data-scroll-reveal="enter bottom move 50px over 0.6s after 0.4s">
-                    
-        <p></p>
-                    </div>
-                <div class="col-lg-4 col-md-6 col-sm-12"
-                    data-scroll-reveal="enter bottom move 50px over 0.6s after 0.4s">
-                    
-        <p id="chatLog">- - How can we help you - -<br></p>
-        <input id="userBox" type="text" onkeydown="if (event.keyCode == 13) {talk()}">
-                    </div>
 
             </div>
         </div>
@@ -765,9 +685,9 @@ https://templatemo.com/tm-535-softy-pinko
             function talk() {
                 var user = document.getElementById("userBox").value;
                 document.getElementById("userBox").value = "";
-                document.getElementById("chatLog").innerHTML += user+"<br>";
+                document.getElementById("chatLog").innerHTML +="Me: " + user+"<br>";
                 if (user in know) {
-                    document.getElementById("chatLog").innerHTML += know[user]+"<br>";
+                    document.getElementById("chatLog").innerHTML +="Assistant: "+ know[user]+"<br>";
                 } else {
                     document.getElementById("chatLog").innerHTML += "I don't understand...<br>";
                 }
