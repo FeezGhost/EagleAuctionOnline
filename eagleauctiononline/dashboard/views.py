@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from .models import *
 from django.contrib.auth.models import User
 import datetime
+from django.contrib import messages
 
 # from .forms import *
 
@@ -13,15 +14,11 @@ import datetime
 def dashboard(request):
     customer = request.user.customer
     coins = customer.coins_set.all()
-    # auctions = customer.auction_set.all().order_by('date_created')
-    bids = customer.bids_set.all()
-    # totalbids = bids.count()
-    # totalauctions = auctions.count()
+    bids = customer.bids_set.all().order_by('-date_created')
     now = datetime.datetime.now().strftime('%H:%M:%S')
     context = {
         'customer': customer,
         'coins':  coins,
-        # 'auctions': auctions,
         'bids': bids,
         'now': now
     }
@@ -29,12 +26,12 @@ def dashboard(request):
 
 def auctionhistory(request):
     customer = request.user.customer
-    auctions = customer.auction_set.all().order_by('date_created')
-    totalauctions = auctions.count()
+    bids = customer.bids_set.all().order_by('-date_created')
+    totalauctions = bids.count()
 
     context = {
         'customer': customer,
-        'auctions': auctions,
+        'bids': bids,
         'totalauctions': totalauctions,
     }
     return render(request, 'dashboard/dist/AuctionHistory.html', context)
@@ -45,15 +42,15 @@ def bidmessages(request):
 def coinstatus(request):
     customer = request.user.customer
     coins = customer.coins_set.all()
-    auctions = customer.auction_set.all().order_by('date_created')
+    # auctions = customer.auction_set.all().order_by('date_created')
     bids = customer.bids_set.all()
     totalbids = bids.count()
-    totalauctions = auctions.count()
+    # totalauctions = auctions.count()
 
     context = {
         'customer': customer,
         'coins':  coins,
-        'auctions': auctions,
+        # 'auctions': auctions,
         'bids': bids,
     }
     return render(request, 'dashboard/dist/CoinStatus.html', context)
@@ -68,9 +65,12 @@ def auctiondetail(request):
     customer = request.user.customer
     latestauction  = Auction.objects.last()
     coins = customer.coins_set.all()
+    allbids =latestauction.bids_set.all().order_by('-date_created')
     now = datetime.datetime.now().strftime('%H:%M:%S')
     bidform = BidForm(initial={'customer':customer, 'auction':latestauction})
     value_bided = 0
+    mymessage = ""
+    mymessage2 = ""
     coinform = CoinsForm(instance=coins[0])
     hour = now.split(':')
     hours =   int(hour[0])
@@ -79,25 +79,34 @@ def auctiondetail(request):
     if(hours>10):
         print('elligable')
     if request.method == 'POST':
-        value_bided = request.POST.get("bided")
+        value_bided = int(request.POST.get("bided"))
         bidedup= coins[0].bided
+        totalup = coins[0].total
         remainingup = coins[0].remaining
-        bidedup +=int(value_bided)
-        remainingup -=int(value_bided)
-        remainingup  = str(remainingup)
-        bidedup = str(bidedup)
-        print(remainingup)
-        print(bidedup)
-        coinform = CoinsForm(instance={'bided':bidedup, 'remaining':remainingup}  ,instance=coins[0])
-        bidform = BidForm(request.POST)
-        if bidform.is_valid():
-            userBidForm = bidform.save()
-            return redirect('dashboard')
+        if value_bided > remainingup:
+            mymessage = "You don't have enough coins"
+        else:
+            value_bided = str(value_bided)
+            bidedup +=int(value_bided)
+            remainingup -=int(value_bided)
+            remainingup  = str(remainingup)
+            bidedup = str(bidedup)
+            coinform = CoinsForm({'customer':customer, 'total':totalup,'bided': bidedup, 'remaining': remainingup} ,instance=coins[0])
+            if coinform.is_valid():
+                userCoinForm = coinform.save()
+            bidform = BidForm(request.POST)
+            if bidform.is_valid():
+                userBidForm = bidform.save()
+                mymessage2 = "Sucessfully  bided"
     print(value_bided)
     context = {
         'customer': customer,
         'coins':  coins,
-        'bidform':bidform
+        'bidform':bidform,
+        'coinform': coinform,
+        'allbids': allbids,
+        'mymessage': mymessage,
+        'mymessage2': mymessage2
     }
     return render(request, 'dashboard/dist/ViewAuction.html', context)
 
@@ -110,8 +119,25 @@ def signupView(request):
         if form.is_valid():
             user = form.save()
             user1 = form.cleaned_data.get('username')
-            Customer.objects.create(
+            firstnname = form.cleaned_data.get('first_name')
+            lastname = form.cleaned_data.get('last_name')
+            holdername = form.cleaned_data.get('account_holder_name')
+            accountnumber = form.cleaned_data.get('account_number')
+            phoneno = form.cleaned_data.get('phone')
+            bank = form.cleaned_data.get('banks')
+            customer=Customer.objects.create(
                user=user,
+               name=user1,
+               first_name=firstnname,
+               last_name=lastname,
+               account_holder_name=holdername,
+               account_number=accountnumber,
+               phone=phoneno,
+               banks=bank,
+            )
+
+            Coins.objects.create(
+               customer=customer,
             )
             messages.success(request, 'Account has been created for ' + user1)
             login(request, user)

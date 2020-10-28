@@ -5,8 +5,27 @@ from django.contrib.auth.models import User
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=200, null=True)
-    profile_pic = models.ImageField(null=True, blank=True)
-    date_created = models.DateTimeField(auto_now_add=True, null=True)
+    first_name = models.CharField(max_length=200, null=True)
+    last_name = models.CharField(max_length=200, null=True)
+    account_holder_name = models.CharField(max_length=200, null=True)
+    account_number = models.CharField(max_length=200, null=True)
+    phone = models.CharField(max_length=200, null=True)
+    CATEGORY = (
+			('Capitec', 'Capitec'),
+			('Absa', 'Absa'),
+			('Nedbank', 'Nedbank'),
+			('Standard Bank', 'Standard_bank'),
+			('Tyme Bank', 'Tyme'),
+			('Bidvest', 'Bidvest'),
+			('African Bank', 'African_Bank'),
+			('Gro bank south Africa', 'Gro_bank_south_Africa'),
+			('FNB South Africa', 'FNB_South_Africa'),
+			('FNB Namibia', 'FNB_Namibia'),
+			('FNB South Africa', 'FNB_South_Africa'),
+			('FNB Swaziland', 'FNB_Swaziland'),
+			('FNB Zambia', 'FNB_Zambia'),
+			)
+    banks = models.CharField(max_length=200, null=True, choices=CATEGORY)
     
     def __str__(self):
         return str(self.name)

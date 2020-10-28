@@ -113,26 +113,26 @@
                 <main>
                     <div class="container-fluid">
                         <h1 class="mt-4">Auction History</h1>
-                        <h1 class="mt-4">Total Auctions: {{totalauctions}}</h1>
+                        <h1 class="mt-4"></h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active">Live</li>
                         </ol>
-                        <div class="row">
-                        
-                            {% for auction in auctions %}
-                            
-                                <div class="col-xl-3 col-md-6">
-                                    <div class="card bg-success text-white mb-4">
-                                        <div class="card-body">Auction Time: {{auction}}</div>
-                                        <div class="card-footer d-flex align-items-center justify-content-between">
-                                         Bided: {{auction.bids.bided}}
-                                            <a class="small text-white stretched-link" href="#">View Details</a>
-                                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        <h1>Total Interaction with Auction: {{totalauctions}}</h1>
+                            <h1>Auctions Participated</h1>
+                                {% for bid in bids %}
+                                    <div class="col-lg-6">
+                                        <div class="card  text-dark mb-4">
+                                            <div class="card-body"><h3>Auction Time</h3> {{bid.auction}}</div>
+                                            <div class="card-body"><h3>Bid Time</h3>  {{bid}}</div>
+                                            <div class="card-body"><h3>Coin Bided</h3> R{{bid.bided}}</div>
+                                            <div class="card-footer d-flex align-items-center justify-content-between">
+                                                
+                                                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            {% endfor %}
-                        </div>
+                                
+                                {% endfor %}
                         <div class="row">
                             
                         </div>

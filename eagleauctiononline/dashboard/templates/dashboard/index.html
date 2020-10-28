@@ -589,8 +589,17 @@ https://templatemo.com/tm-535-softy-pinko
             </div>
 
             <div class="row">
+            <div class="col-lg-4 col-md-6 col-sm-12"
+                    data-scroll-reveal="enter bottom move 50px over 0.6s after 0.4s">
+                    
+        <p></p>
+                    </div>
                 <div class="col-lg-4 col-md-6 col-sm-12"
-                    data-scroll-reveal="enter bottom move 50px over 0.6s after 0.4s"></div>
+                    data-scroll-reveal="enter bottom move 50px over 0.6s after 0.4s">
+                    
+        <p id="chatLog">- - How can we help you - -<br></p>
+        <input id="userBox" type="text" onkeydown="if (event.keyCode == 13) {talk()}">
+                    </div>
 
             </div>
         </div>
@@ -703,6 +712,7 @@ https://templatemo.com/tm-535-softy-pinko
     </section>
     <!-- ***** Contact Us End ***** -->
 
+
     <!-- ***** Footer Start ***** -->
     <footer>
         <div class="container">
@@ -741,6 +751,28 @@ https://templatemo.com/tm-535-softy-pinko
 
     <!-- Global Init -->
     <script src="{%static 'assets/js/custom.js'%}"></script>
+    <script>
+            know = {
+                "hello" : "hi",
+                "how are you?" : "good",
+                "ok" : ":)",
+                "hi" : "hello",
+                "how are you" : "good",
+                "i need help" : "send us email",
+                "help me" : "send us email",
+
+            };
+            function talk() {
+                var user = document.getElementById("userBox").value;
+                document.getElementById("userBox").value = "";
+                document.getElementById("chatLog").innerHTML += user+"<br>";
+                if (user in know) {
+                    document.getElementById("chatLog").innerHTML += know[user]+"<br>";
+                } else {
+                    document.getElementById("chatLog").innerHTML += "I don't understand...<br>";
+                }
+            } 
+        </script>
 
 </body>
 

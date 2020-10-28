@@ -26,11 +26,12 @@ class CreatUserForm(UserCreationForm):
 			('FNB Swaziland', 'FNB_Swaziland'),
 			('FNB Zambia', 'FNB_Zambia'),
 			)
-    banks = forms.ChoiceField(choices=CATEGORY,)
+    banks = forms.ChoiceField(choices=CATEGORY)
 
+		
     class Meta:
         model =  User
-        fields =  ['username', 'first_name', 'last_name', 'email', 'phone', 'account_holder_name','account_number','password1', 'password2']
+        fields =  ['username', 'first_name', 'last_name', 'email', 'phone', 'account_holder_name','account_number', 'banks','password1', 'password2']
 
 class BidForm(ModelForm):
     
