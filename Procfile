@@ -1,0 +1,1 @@
+web: gunicorn eagleauctiononline.wsgi --log-file -
