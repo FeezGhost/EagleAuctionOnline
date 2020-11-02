@@ -61,6 +61,24 @@ class Bids(models.Model):
 			('5000', 'R5000'),
 			)
     bided =models.CharField(max_length=200, null=True, choices=CATEGORY)
+    remainingbid = models.IntegerField(default=0)
+    date_created = models.DateTimeField(auto_now_add=True, null=True)
+
+    # def clean(self):
+    #   self.remainingbid=int(self.bided)
+    def __str__(self):
+        return str(self.id)
+
+class BuyBid(models.Model):
+    buyer = models.ForeignKey(Customer, null=True, on_delete= models.SET_NULL)
+    bider = models.ForeignKey(Bids, null=True, on_delete= models.SET_NULL)
+    quantity = models.IntegerField(default=0)
+    CATEGORY = (
+			('pending', 'Pending'),
+			('approved', 'Approved'),
+			('declined', 'Declined'),
+			)
+    status =models.CharField(max_length=200, null=True, choices=CATEGORY)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
     def __str__(self):
-        return str(self.date_created)
+        return str(self.buyer.name)

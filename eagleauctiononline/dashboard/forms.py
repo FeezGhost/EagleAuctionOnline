@@ -38,9 +38,16 @@ class BidForm(ModelForm):
     class Meta:
         model = Bids
         fields = '__all__'
+    
 
 class CoinsForm(ModelForm):
     
     class Meta:
         model = Coins
+        fields = '__all__'
+
+class BuyBidForm(ModelForm):
+    
+    class Meta:
+        model = BuyBid
         fields = '__all__'

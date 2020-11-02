@@ -42,24 +42,122 @@ def bidmessages(request):
 def coinstatus(request):
     customer = request.user.customer
     coins = customer.coins_set.all()
-    # auctions = customer.auction_set.all().order_by('date_created')
     bids = customer.bids_set.all()
     totalbids = bids.count()
-    # totalauctions = auctions.count()
 
     context = {
         'customer': customer,
         'coins':  coins,
-        # 'auctions': auctions,
         'bids': bids,
     }
     return render(request, 'dashboard/dist/CoinStatus.html', context)
 
 def paybid(request):
-   return render(request, 'dashboard/dist/PayBids.html')
+    payer = request.user.customer
+    payed = payer.buybid_set.all()
+    context = {
+        'payed': payed
+    }
+    return render(request, 'dashboard/dist/PayBids.html', context)
 
 def receivepayments(request):
-   return render(request, 'dashboard/dist/ReceivePayments.html')
+    bider = request.user.customer
+    bids = bider.bids_set.all().order_by('-date_created')
+    haveBuyer = []
+
+    for bid in bids:
+        haveBuyer.append(BuyBid.objects.filter(bider=bid))
+
+    context = {
+        'haveBuyer':haveBuyer,
+        'bider':bider,
+    }
+    return render(request, 'dashboard/dist/ReceivePayments.html', context)
+
+def declinepayment(request,pk_id):
+    user = request.user.customer
+    buybid =  BuyBid.objects.get(id=pk_id)
+    bider = Bids.objects.get(id=buybid.bider.id)
+    bider.remainingbid += buybid.quantity 
+    if request.method == 'POST':
+        buybid.status='declined'
+        buy=buybid.save()
+        bider1 = bider.save()
+        return redirect("receive_payments")
+
+    context = {
+    }
+    return render(request, 'dashboard/dist/DeclinePayment.html', context)
+
+def acceptpayment(request,pk_id):
+    user = request.user.customer
+    buybid =  BuyBid.objects.get(id=pk_id)
+    if request.method == 'POST':
+        buybid.status='approved'
+        buy=buybid.save()
+        return redirect("receive_payments")
+
+    context = {
+    }
+    return render(request, 'dashboard/dist/AcceptPayment.html', context)
+
+def paycustomer(request,pk_id):
+    customer = request.user.customer
+    bid = Bids.objects.get(id=pk_id)
+    buyform = BuyBidForm(initial={'buyer':customer, 'bider':bid,'status':'pending'})
+    bidformup = BidForm(instance=bid)
+
+
+    bidcustomer = bid.customer
+    bidauction = bid.auction
+    bidbided = bid.bided
+    remainingup = bid.remainingbid
+    print(remainingup)
+
+    value_bought = 0
+    message1 = ''
+    msg1 = False
+    message2 = ''
+    msg2 = False
+
+    if request.method == 'POST':
+        buyform = BuyBidForm(request.POST)
+        value_bought = int(request.POST.get("quantity"))
+
+        remainingup = remainingup-value_bought
+
+        if remainingup < 1:
+            message1 = 'Remaining Coins are below than Bided Coins'
+            msg1 = True
+        
+        else:
+            message2 = 'Request for bid has been sent'
+            msg2 = True
+            bidformup = BidForm({'customer':bidcustomer, 'auction':bidauction, 'bided':bidbided, 'remainingbid': remainingup}, instance=bid)
+            customerbuyform = BuyBidForm(request.POST)
+
+            if bidformup.is_valid():
+                
+                    bidformup2 = bidformup.save()
+                    bidformup2.save()
+                    print(bidformup2.id)
+                    print(pk_id)
+                    print("Bid form Updated")
+
+            if buyform.is_valid():
+                    print("buyform made")
+                    buyform2 = buyform.save()
+
+    context = {
+        'bid':bid,
+        'buyform':buyform,
+        'message1': message1,
+        'msg1': msg1,
+        'message2': message2,
+        'msg2': msg2,
+    }
+
+    return render(request, 'dashboard/dist/PayCustomer.html', context)
 
 def auctiondetail(request):
     customer = request.user.customer
@@ -68,19 +166,31 @@ def auctiondetail(request):
     allbids =latestauction.bids_set.all().order_by('-date_created')
     now = datetime.datetime.now().strftime('%H:%M:%S')
     bidform = BidForm(initial={'customer':customer, 'auction':latestauction})
+    
+    
     value_bided = 0
     mymessage = ""
     mymessage2 = ""
+
+
     coinform = CoinsForm(instance=coins[0])
+
+
     hour = now.split(':')
     hours =   int(hour[0])
     mins = int(hour[1])
+
+
     live = False
     msg1 = msg2= False
+
+
     if((hours>10 and hours<11 )):
         live=True
     if (hours>18 and mins>30) and (hours<20 and mins<30):
         live=True
+
+
     if request.method == 'POST':
         value_bided = int(request.POST.get("bided"))
         bidedup= coins[0].bided
@@ -93,16 +203,33 @@ def auctiondetail(request):
             value_bided = str(value_bided)
             bidedup +=int(value_bided)
             remainingup -=int(value_bided)
+            remainingbid = int(value_bided)
             remainingup  = str(remainingup)
             bidedup = str(bidedup)
             coinform = CoinsForm({'customer':customer, 'total':totalup,'bided': bidedup, 'remaining': remainingup} ,instance=coins[0])
             if coinform.is_valid():
                 userCoinForm = coinform.save()
+                print(coinform)
+                print(userCoinForm)
+                
             bidform = BidForm(request.POST)
+            print(bidform)
+            print(request.POST.get("remainingbid"))
             if bidform.is_valid():
-                userBidForm = bidform.save()
+                bid =Bids.objects.create(
+                    customer=customer, 
+                    auction=latestauction, 
+                    bided=value_bided, 
+                    remainingbid= remainingbid
+                )
+                print(bid)
                 mymessage2 = "Sucessfully  bided"
                 msg2 = True
+
+
+# remove this later
+    live = True
+
     context = {
         'customer': customer,
         'coins':  coins,
@@ -115,6 +242,7 @@ def auctiondetail(request):
         'msg1': msg1,
         'msg2': msg2,
     }
+
     return render(request, 'dashboard/dist/ViewAuction.html', context)
 
 

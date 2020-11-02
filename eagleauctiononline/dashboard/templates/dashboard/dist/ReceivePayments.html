@@ -118,42 +118,27 @@
                             <li class="breadcrumb-item active">Live</li>
                         </ol>
                         <div class="row">
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-primary text-white mb-4">
-                                    <div class="card-body">Primary Card</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        {% for bids in haveBuyer %}
+                            {% for bid in bids %}
+                                {% if bid.status == 'pending' %}
+                                    <div class="col-xl-3 col-md-6">
+                                        <div class="card text-dark mb-4">
+                                            <div class="card-body"><h3>Buyer: </h3> {{bid.buyer}}</div>
+                                            <div class="card-body"><h3>Bid Date: </h3> {{bid.bider}}</div>
+                                            <div class="card-body"><h3>Coin bided: </h3> R{{bid.bider.bided}}</div>
+                                            <div class="card-body"><h3>Coin Remaing in Bid: </h3> {{bid.bider.remainingbid}}</div>
+                                            {% comment %} edit this: add proof picture {% endcomment %}
+                                            <div class="card-body"><h3>Buyer Proof: </h3> {{bid.buyer}}</div>
+                                            <div class="card-footer d-flex align-items-center justify-content-between">
+                                            <a class="btn btn-outline-success " href="{% url 'accept_payment' bid.id %}">Accept</a>
+                                            <a class="btn btn-outline-danger " href="{% url 'decline_payment' bid.id %}">Decline</a>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-warning text-white mb-4">
-                                    <div class="card-body">Warning Card</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-success text-white mb-4">
-                                    <div class="card-body">Success Card</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-danger text-white mb-4">
-                                    <div class="card-body">Danger Card</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
-                            </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                        </div>
                         </div>
                         <div class="row">
                             
