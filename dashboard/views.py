@@ -7,6 +7,7 @@ from .models import *
 from django.contrib.auth.models import User
 import datetime
 from django.contrib import messages
+import re
 
 # from .forms import *
 
@@ -38,6 +39,25 @@ def auctionhistory(request):
 
 def bidmessages(request):
    return render(request, 'dashboard/dist/BIDMessages.html')
+
+def bankedit(request):
+    customer = request.user.customer
+    useR = request.user
+    userform = CreatUserForm(instance=customer)
+    if request.method == 'POST':
+        bank = request.POST.get("banks")
+        ahc = request.POST.get("account_holder_name")
+        an = request.POST.get("account_number")
+        customer.banks = bank
+        customer.account_holder_name = ahc
+        customer.account_number = an
+        customer.save()
+        userform = CreatUserForm(instance=customer)
+
+    context = {
+        'CreatUserForm': userform,
+    }
+    return render(request, 'dashboard/dist/BankingEdit.html', context)
 
 def coinstatus(request):
     customer = request.user.customer
@@ -92,10 +112,22 @@ def declinepayment(request,pk_id):
 def acceptpayment(request,pk_id):
     user = request.user.customer
     buybid =  BuyBid.objects.get(id=pk_id)
+    buyer = buybid.buyer
+    coins = buyer.coins_set.all()
+    quantity = buybid.quantity
+    coinform = CoinsForm(instance=coins[0])
+    totalup = coins[0].total
+    remainingup = coins[0].remaining
+    bidedup = coins[0].bided
+    totalup +=int(quantity)
+    remainingup +=int(quantity)
     if request.method == 'POST':
         buybid.status='approved'
         buy=buybid.save()
-        return redirect("receive_payments")
+        coinform = CoinsForm({'customer':buyer, 'total':totalup,'bided': bidedup, 'remaining': remainingup} ,instance=coins[0])
+        if coinform.is_valid():
+            userCoinForm = coinform.save()
+            return redirect("receive_payments")
 
     context = {
     }
@@ -121,7 +153,7 @@ def paycustomer(request,pk_id):
     msg2 = False
 
     if request.method == 'POST':
-        buyform = BuyBidForm(request.POST)
+        buyform = BuyBidForm(request.POST,  request.FILES)
         value_bought = int(request.POST.get("quantity"))
 
         remainingup = remainingup-value_bought
@@ -134,7 +166,9 @@ def paycustomer(request,pk_id):
             message2 = 'Request for bid has been sent'
             msg2 = True
             bidformup = BidForm({'customer':bidcustomer, 'auction':bidauction, 'bided':bidbided, 'remainingbid': remainingup}, instance=bid)
-            customerbuyform = BuyBidForm(request.POST)
+            customerbuyform = BuyBidForm(request.POST,  request.FILES) 
+            print(customerbuyform)
+            
 
             if bidformup.is_valid():
                 
@@ -161,10 +195,30 @@ def paycustomer(request,pk_id):
 
 def auctiondetail(request):
     customer = request.user.customer
-    latestauction  = Auction.objects.last()
+    latestauction  = ''
     coins = customer.coins_set.all()
-    allbids =latestauction.bids_set.all().order_by('-date_created')
+    
     now = datetime.datetime.now().strftime('%H:%M:%S')
+    hour = now.split(':')
+    hours =   int(hour[0])
+    mins = int(hour[1])
+
+
+    live = False
+    msg1 = msg2= False
+
+    if((hours>10 and hours<11 )):
+        live=True
+        latestauction  = Auction.objects.last()
+        allbids =latestauction.bids_set.all().order_by('-date_created')
+    if (hours>18 and mins>30) and (hours<20 and mins<30):
+        live=True
+
+    allbids =''
+    if live:
+        latestauction  = Auction.objects.last()
+        allbids =latestauction.bids_set.all().order_by('-date_created')
+
     bidform = BidForm(initial={'customer':customer, 'auction':latestauction})
     
     
@@ -174,23 +228,6 @@ def auctiondetail(request):
 
 
     coinform = CoinsForm(instance=coins[0])
-
-
-    hour = now.split(':')
-    hours =   int(hour[0])
-    mins = int(hour[1])
-
-
-    live = False
-    msg1 = msg2= False
-
-
-    if((hours>10 and hours<11 )):
-        live=True
-    if (hours>18 and mins>30) and (hours<20 and mins<30):
-        live=True
-
-
     if request.method == 'POST':
         value_bided = int(request.POST.get("bided"))
         bidedup= coins[0].bided
@@ -225,10 +262,6 @@ def auctiondetail(request):
                 print(bid)
                 mymessage2 = "Sucessfully  bided"
                 msg2 = True
-
-
-# remove this later
-    live = True
 
     context = {
         'customer': customer,

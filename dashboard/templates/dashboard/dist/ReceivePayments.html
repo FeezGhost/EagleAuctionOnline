@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+
 <html lang="en">
     <head>
         <meta charset="utf-8" />
@@ -11,6 +12,11 @@
         <link href="{%static 'css/styles.css' %}" rel="stylesheet" />
         <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
+        <style>
+            .proofimage{
+                height: 400px;
+            }
+        </style>
     </head>
     <body class="sb-nav-fixed">
         
@@ -73,36 +79,17 @@
                             </a>
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                        Authentication
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    <a class="nav-link collapsed" href="{% url 'bank_edit' %}">
+                                        Edit
                                     </a>
-                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="{% url 'dashboard' %}">Register</a>
-                                            <a class="nav-link" href="password.html">Forgot Password</a>
-                                        </nav>
-                                    </div>
-                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
-                                        Error
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="401.html">401 Page</a>
-                                            <a class="nav-link" href="404.html">404 Page</a>
-                                            <a class="nav-link" href="500.html">500 Page</a>
-                                        </nav>
-                                    </div>
                                 </nav>
                             </div>
-                            <div class="sb-sidenav-menu-heading">Addons</div>
+                            <div class="sb-sidenav-menu-heading"></div>
                             <a class="nav-link" href="{% url 'logout' %}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                                 Log Out
                             </a>
-                            
-                        </div>
+                            </div>
                     </div>
                     <div class="sb-sidenav-footer">
                         <div class="small">Logged in as:</div>
@@ -121,14 +108,17 @@
                         {% for bids in haveBuyer %}
                             {% for bid in bids %}
                                 {% if bid.status == 'pending' %}
-                                    <div class="col-xl-3 col-md-6">
+                                    <div class="col-xl-5 col-md-6">
                                         <div class="card text-dark mb-4">
                                             <div class="card-body"><h3>Buyer: </h3> {{bid.buyer}}</div>
-                                            <div class="card-body"><h3>Bid Date: </h3> {{bid.bider}}</div>
+                                            <div class="card-body"><h3>Bid Date: </h3> {{bid.bider.date_created}}</div>
+                                            
+                                            <div class="card-body"><h3>Seller: </h3> {{bid.bider.customer.name}}</div>
                                             <div class="card-body"><h3>Coin bided: </h3> R{{bid.bider.bided}}</div>
                                             <div class="card-body"><h3>Coin Remaing in Bid: </h3> {{bid.bider.remainingbid}}</div>
                                             {% comment %} edit this: add proof picture {% endcomment %}
-                                            <div class="card-body"><h3>Buyer Proof: </h3> {{bid.buyer}}</div>
+                                            <div class="card-body"><h3>Buyer Proof:</div>
+                                            </h3> <img class="proofimage" src="{{bid.proof.url}}" alt="" srcset=""> 
                                             <div class="card-footer d-flex align-items-center justify-content-between">
                                             <a class="btn btn-outline-success " href="{% url 'accept_payment' bid.id %}">Accept</a>
                                             <a class="btn btn-outline-danger " href="{% url 'decline_payment' bid.id %}">Decline</a>

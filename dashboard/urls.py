@@ -10,6 +10,7 @@ urlpatterns = [
     path('PayCustomer/<str:pk_id>/', views.paycustomer, name="pay_customer"),
     path('PayBids/', views.paybid, name="pay_bids"),
     path('ReceivePayments/', views.receivepayments, name="receive_payments"),
+    path('BankEdit/', views.bankedit, name="bank_edit"),
     path('ViewAuction/', views.auctiondetail, name="view_auction"),
     path('logout/', views.logout_view, name="logout"),
     path('signup/', views.signupView, name="signup"),

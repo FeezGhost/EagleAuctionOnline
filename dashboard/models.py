@@ -67,7 +67,7 @@ class Bids(models.Model):
     # def clean(self):
     #   self.remainingbid=int(self.bided)
     def __str__(self):
-        return str(self.id)
+        return str(self.date_created)
 
 class BuyBid(models.Model):
     buyer = models.ForeignKey(Customer, null=True, on_delete= models.SET_NULL)
@@ -79,6 +79,8 @@ class BuyBid(models.Model):
 			('declined', 'Declined'),
 			)
     status =models.CharField(max_length=200, null=True, choices=CATEGORY)
+    
+    proof = models.ImageField(null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
     def __str__(self):
         return str(self.buyer.name)
