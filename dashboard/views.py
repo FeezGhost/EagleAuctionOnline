@@ -8,13 +8,86 @@ from django.contrib.auth.models import User
 import datetime
 from django.contrib import messages
 import re
+from django.contrib.auth.decorators import login_required
+from .decorators import  unauthenticated_user
 
-# from .forms import *
 
 # Create your views here.
+@login_required(login_url="homepage")
 def dashboard(request):
     customer = request.user.customer
     coins = customer.coins_set.all()
+    immcoins = customer.immaturecoins_set.all()
+    now = datetime.datetime.now().strftime("%m/%d/%Y")
+    hour = now.split('/')
+    month =   int(hour[0])
+    day = int(hour[1])
+    for immcoin in immcoins:
+        monthcreated = int(immcoin.date_created.month)
+        daycreated = int(immcoin.date_created.day)
+        if(month == monthcreated):
+            diff = day - daycreated
+            if( (diff>=5) and (immcoin.days == 5) ):
+                #add 130 per
+                immcoin.coins += int(immcoin.coins*1.3) 
+                totalup = coins[0].total
+                remainingup = coins[0].remaining
+                bidedup = coins[0].bided
+                totalup +=int(immcoin.coins)
+                remainingup +=int(immcoin.coins)
+                coinform = CoinsForm({'customer':customer, 'total':totalup,'bided': bidedup, 'remaining': remainingup} ,instance=coins[0])
+                if coinform.is_valid():
+                    userCoinForm = coinform.save()
+                    immcoin.delete()
+            elif( (diff>=2) and (immcoin.days == 2)):
+                # add 60 per
+                immcoin.coins += int(immcoin.coins*0.6) 
+                totalup = coins[0].total
+                remainingup = coins[0].remaining
+                bidedup = coins[0].bided
+                totalup +=int(immcoin.coins)
+                remainingup +=int(immcoin.coins)
+                coinform = CoinsForm({'customer':customer, 'total':totalup,'bided': bidedup, 'remaining': remainingup} ,instance=coins[0])
+                if coinform.is_valid():
+                    userCoinForm = coinform.save()
+                    immcoin.delete()
+            else:
+                pass
+
+        else:
+            daysincrement = 30-daycreated
+            daycreated = 1
+            if  (daysincrement<0):
+                day += (abs(daysincrement))
+            else:
+                day += (daysincrement+1)
+            diff = day - daycreated
+            if( (diff>=5) and (immcoin.days == 5) ):
+                #add 130 per
+                immcoin.coins += int(immcoin.coins*1.3) 
+                totalup = coins[0].total
+                remainingup = coins[0].remaining
+                bidedup = coins[0].bided
+                totalup +=int(immcoin.coins)
+                remainingup +=int(immcoin.coins)
+                coinform = CoinsForm({'customer':customer, 'total':totalup,'bided': bidedup, 'remaining': remainingup} ,instance=coins[0])
+                if coinform.is_valid():
+                    userCoinForm = coinform.save()
+                    immcoin.delete()
+            elif( (diff>=2) and (immcoin.days == 2)):
+                # add 60 per
+                immcoin.coins += int(immcoin.coins*0.6) 
+                totalup = coins[0].total
+                remainingup = coins[0].remaining
+                bidedup = coins[0].bided
+                totalup +=int(immcoin.coins)
+                remainingup +=int(immcoin.coins)
+                coinform = CoinsForm({'customer':customer, 'total':totalup,'bided': bidedup, 'remaining': remainingup} ,instance=coins[0])
+                if coinform.is_valid():
+                    userCoinForm = coinform.save()
+                    immcoin.delete()
+            else:
+                pass
     bids = customer.bids_set.all().order_by('-date_created')
     now = datetime.datetime.now().strftime('%H:%M:%S')
     context = {
@@ -25,6 +98,7 @@ def dashboard(request):
     }
     return render(request, 'dashboard/dist/index.html', context)
 
+@login_required(login_url="homepage")
 def auctionhistory(request):
     customer = request.user.customer
     bids = customer.bids_set.all().order_by('-date_created')
@@ -37,9 +111,11 @@ def auctionhistory(request):
     }
     return render(request, 'dashboard/dist/AuctionHistory.html', context)
 
+@login_required(login_url="homepage")
 def bidmessages(request):
    return render(request, 'dashboard/dist/BIDMessages.html')
 
+@login_required(login_url="homepage")
 def bankedit(request):
     customer = request.user.customer
     useR = request.user
@@ -59,6 +135,7 @@ def bankedit(request):
     }
     return render(request, 'dashboard/dist/BankingEdit.html', context)
 
+@login_required(login_url="homepage")
 def coinstatus(request):
     customer = request.user.customer
     coins = customer.coins_set.all()
@@ -72,6 +149,7 @@ def coinstatus(request):
     }
     return render(request, 'dashboard/dist/CoinStatus.html', context)
 
+@login_required(login_url="homepage")
 def paybid(request):
     payer = request.user.customer
     payed = payer.buybid_set.all()
@@ -80,6 +158,7 @@ def paybid(request):
     }
     return render(request, 'dashboard/dist/PayBids.html', context)
 
+@login_required(login_url="homepage")
 def receivepayments(request):
     bider = request.user.customer
     bids = bider.bids_set.all().order_by('-date_created')
@@ -94,6 +173,7 @@ def receivepayments(request):
     }
     return render(request, 'dashboard/dist/ReceivePayments.html', context)
 
+@login_required(login_url="homepage")
 def declinepayment(request,pk_id):
     user = request.user.customer
     buybid =  BuyBid.objects.get(id=pk_id)
@@ -109,30 +189,28 @@ def declinepayment(request,pk_id):
     }
     return render(request, 'dashboard/dist/DeclinePayment.html', context)
 
+@login_required(login_url="homepage")
 def acceptpayment(request,pk_id):
     user = request.user.customer
     buybid =  BuyBid.objects.get(id=pk_id)
     buyer = buybid.buyer
-    coins = buyer.coins_set.all()
     quantity = buybid.quantity
-    coinform = CoinsForm(instance=coins[0])
-    totalup = coins[0].total
-    remainingup = coins[0].remaining
-    bidedup = coins[0].bided
-    totalup +=int(quantity)
-    remainingup +=int(quantity)
     if request.method == 'POST':
         buybid.status='approved'
+        day = int(buybid.days)
         buy=buybid.save()
-        coinform = CoinsForm({'customer':buyer, 'total':totalup,'bided': bidedup, 'remaining': remainingup} ,instance=coins[0])
-        if coinform.is_valid():
-            userCoinForm = coinform.save()
-            return redirect("receive_payments")
+        ImmatureCoins.objects.create(
+               customer=buyer,
+               coins=quantity,
+               days=day,
+            )
+        return redirect("receive_payments")
 
     context = {
     }
     return render(request, 'dashboard/dist/AcceptPayment.html', context)
 
+@login_required(login_url="homepage")
 def paycustomer(request,pk_id):
     customer = request.user.customer
     bid = Bids.objects.get(id=pk_id)
@@ -159,7 +237,7 @@ def paycustomer(request,pk_id):
         remainingup = remainingup-value_bought
 
         if remainingup < 1:
-            message1 = 'Remaining Coins are below than Bided Coins'
+            message1 = 'Remaining Coins are 0'
             msg1 = True
         
         else:
@@ -167,19 +245,13 @@ def paycustomer(request,pk_id):
             msg2 = True
             bidformup = BidForm({'customer':bidcustomer, 'auction':bidauction, 'bided':bidbided, 'remainingbid': remainingup}, instance=bid)
             customerbuyform = BuyBidForm(request.POST,  request.FILES) 
-            print(customerbuyform)
-            
 
             if bidformup.is_valid():
                 
                     bidformup2 = bidformup.save()
                     bidformup2.save()
-                    print(bidformup2.id)
-                    print(pk_id)
-                    print("Bid form Updated")
 
             if buyform.is_valid():
-                    print("buyform made")
                     buyform2 = buyform.save()
 
     context = {
@@ -193,6 +265,7 @@ def paycustomer(request,pk_id):
 
     return render(request, 'dashboard/dist/PayCustomer.html', context)
 
+@login_required(login_url="homepage")
 def auctiondetail(request):
     customer = request.user.customer
     latestauction  = ''
@@ -207,13 +280,12 @@ def auctiondetail(request):
     live = False
     msg1 = msg2= False
 
-    if((hours>10 and hours<11 )):
+    if((hours>=10 and mins<=30 )):
         live=True
         latestauction  = Auction.objects.last()
         allbids =latestauction.bids_set.all().order_by('-date_created')
-    if (hours>18 and mins>30) and (hours<20 and mins<30):
+    if (hours>=18 and mins>=30) and (hours<=19):
         live=True
-
     allbids =''
     if live:
         latestauction  = Auction.objects.last()
@@ -233,7 +305,7 @@ def auctiondetail(request):
         bidedup= coins[0].bided
         totalup = coins[0].total
         remainingup = coins[0].remaining
-        if value_bided > remainingup:
+        if value_bided >= remainingup:
             mymessage = "You don't have enough coins"
             msg1 = True
         else:
@@ -246,12 +318,8 @@ def auctiondetail(request):
             coinform = CoinsForm({'customer':customer, 'total':totalup,'bided': bidedup, 'remaining': remainingup} ,instance=coins[0])
             if coinform.is_valid():
                 userCoinForm = coinform.save()
-                print(coinform)
-                print(userCoinForm)
                 
             bidform = BidForm(request.POST)
-            print(bidform)
-            print(request.POST.get("remainingbid"))
             if bidform.is_valid():
                 bid =Bids.objects.create(
                     customer=customer, 
@@ -259,7 +327,6 @@ def auctiondetail(request):
                     bided=value_bided, 
                     remainingbid= remainingbid
                 )
-                print(bid)
                 mymessage2 = "Sucessfully  bided"
                 msg2 = True
 
@@ -279,7 +346,7 @@ def auctiondetail(request):
     return render(request, 'dashboard/dist/ViewAuction.html', context)
 
 
-# @unauthenticated_user
+@unauthenticated_user
 def signupView(request):
     form = CreatUserForm()
     if request.method == 'POST':
@@ -313,10 +380,12 @@ def signupView(request):
     context = {'form': form}
     return render(request, 'dashboard/signup.html', context)
 
+@login_required(login_url="homepage")
 def logout_view(request):
     logout(request)
     return redirect("homepage")
 
+@unauthenticated_user
 def homepage(request):
     
     now = datetime.datetime.now().strftime('%H:%M:%S')
@@ -324,9 +393,9 @@ def homepage(request):
     hours =   int(hour[0])
     mins = int(hour[1])
     live = False
-    if((hours>10 and hours<11)):
+    if((hours>=10 and mins<=11)):
         live=True
-    if (hours>18 and mins>30) and (hours<20 and mins<30):
+    if (hours>=18 and mins>=30) and (hours<=19 ):
         live=True
     if request.user.is_authenticated:
         return redirect('dashboard')

@@ -40,6 +40,14 @@ class Coins(models.Model):
     def __str__(self):
         return self.customer.name
 
+class ImmatureCoins(models.Model):
+    customer = models.ForeignKey(Customer, null=True, on_delete= models.SET_NULL)
+    coins = models.IntegerField(default=0)
+    days =models.IntegerField(default=0)
+    date_created = models.DateTimeField(auto_now_add=True, null=True)
+    
+    def __str__(self):
+        return self.customer.name
 
 
 class Auction(models.Model):
@@ -63,9 +71,6 @@ class Bids(models.Model):
     bided =models.CharField(max_length=200, null=True, choices=CATEGORY)
     remainingbid = models.IntegerField(default=0)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
-
-    # def clean(self):
-    #   self.remainingbid=int(self.bided)
     def __str__(self):
         return str(self.date_created)
 
@@ -80,6 +85,11 @@ class BuyBid(models.Model):
 			)
     status =models.CharField(max_length=200, null=True, choices=CATEGORY)
     
+    CATEGORY1 = (
+			('2', '2 Days'),
+			('5', '5 Days'),
+			)
+    days =models.CharField(max_length=200, null=True, choices=CATEGORY1)
     proof = models.ImageField(null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
     def __str__(self):

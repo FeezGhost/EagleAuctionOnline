@@ -40,6 +40,12 @@ class BidForm(ModelForm):
         fields = '__all__'
     
 
+class ImmatureCoinsForm(ModelForm):
+    
+    class Meta:
+        model = ImmatureCoins
+        fields = '__all__'
+
 class CoinsForm(ModelForm):
     
     class Meta:
