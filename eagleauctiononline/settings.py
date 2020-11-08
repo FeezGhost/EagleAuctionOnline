@@ -25,7 +25,7 @@ SECRET_KEY = 'libwu!1b#^4)8x*ego&=zp#2=)4zkm@gy(-_%6rfe4j9n6kem!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['eagleauction.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['eagleauction.herokuapp.com', 'eaglecoinauctiogenius.com', '127.0.0.1', '*']
 
 
 # Application definition
