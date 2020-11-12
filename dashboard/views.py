@@ -10,6 +10,7 @@ from django.contrib import messages
 import re
 from django.contrib.auth.decorators import login_required
 from .decorators import  unauthenticated_user
+import pytz
 
 
 # Create your views here.
@@ -19,7 +20,11 @@ def dashboard(request):
     coins = customer.coins_set.all()
     immcoins = customer.immaturecoins_set.all()
     now = datetime.datetime.now().strftime("%m/%d/%Y")
+    
+    now2 = datetime.datetime.now(pytz.utc)
     hour = now.split('/')
+    
+    now2 = now2.astimezone(pytz.timezone('Africa/Johannesburg'))
     month =   int(hour[0])
     day = int(hour[1])
     for immcoin in immcoins:
@@ -89,7 +94,7 @@ def dashboard(request):
             else:
                 pass
     bids = customer.bids_set.all().order_by('-date_created')
-    now = datetime.datetime.now().strftime('%H:%M:%S')
+    now = now2.strftime('%H:%M:%S')
     context = {
         'customer': customer,
         'coins':  coins,
@@ -271,7 +276,9 @@ def auctiondetail(request):
     latestauction  = ''
     coins = customer.coins_set.all()
     
-    now = datetime.datetime.now().strftime('%H:%M:%S')
+    now = datetime.datetime.now(pytz.utc)
+    now = now.astimezone(pytz.timezone('Africa/Johannesburg')).strftime('%H:%M:%S')
+    print(now)
     hour = now.split(':')
     hours =   int(hour[0])
     mins = int(hour[1])

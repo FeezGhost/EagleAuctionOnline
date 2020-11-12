@@ -24,6 +24,7 @@ class Customer(models.Model):
 			('FNB South Africa', 'FNB_South_Africa'),
 			('FNB Swaziland', 'FNB_Swaziland'),
 			('FNB Zambia', 'FNB_Zambia'),
+            ('FNB Lesotho', 'FNB_Lesotho'),
 			)
     banks = models.CharField(max_length=200, null=True, choices=CATEGORY)
     
