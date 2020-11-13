@@ -39,7 +39,7 @@ class Coins(models.Model):
     date_created = models.DateTimeField(auto_now_add=True, null=True)
     
     def __str__(self):
-        return str(self.customer.name)
+        return str(self.customer)
 
 class ImmatureCoins(models.Model):
     customer = models.ForeignKey(Customer, null=True, on_delete= models.SET_NULL)
