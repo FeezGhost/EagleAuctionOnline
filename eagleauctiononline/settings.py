@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 SECRET_KEY = 'libwu!1b#^4)8x*ego&=zp#2=)4zkm@gy(-_%6rfe4j9n6kem!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['eagleauction.herokuapp.com', 'eaglecoinauctiongenius.com', '127.0.0.1']
 
