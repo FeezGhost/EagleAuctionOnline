@@ -278,7 +278,6 @@ def auctiondetail(request):
     
     now = datetime.datetime.now(pytz.utc)
     now = now.astimezone(pytz.timezone('Africa/Johannesburg')).strftime('%H:%M:%S')
-    print(now)
     hour = now.split(':')
     hours =   int(hour[0])
     mins = int(hour[1])
@@ -299,8 +298,7 @@ def auctiondetail(request):
         allbids =latestauction.bids_set.all().order_by('-date_created')
 
     bidform = BidForm(initial={'customer':customer, 'auction':latestauction})
-    
-    
+
     value_bided = 0
     mymessage = ""
     mymessage2 = ""
@@ -395,7 +393,8 @@ def logout_view(request):
 @unauthenticated_user
 def homepage(request):
     
-    now = datetime.datetime.now().strftime('%H:%M:%S')
+    now = datetime.datetime.now(pytz.utc)
+    now = now.astimezone(pytz.timezone('Africa/Johannesburg')).strftime('%H:%M:%S')
     hour = now.split(':')
     hours =   int(hour[0])
     mins = int(hour[1])
